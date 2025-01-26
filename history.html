@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and EmailJS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <h1>Your History</h1> 
+        <tr>
+        </tr>
+    </nav>
+    <div id="history" class="container">
+       
+        <div id="historyContainer"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    emailjs.init('80uAcGkKQNbay0xpB'); // Replace with your EmailJS user ID
+
+    const searchBar = document.getElementById('searchBar');
+    const results = document.getElementById('results');
+    const history = document.getElementById('history');
+
+
+    function saveHistory(item, userName, amount, time, day, email,timestamp) {
+        const historyItem = {
+            number: item.number,
+            name: item.name,
+            initialAmount: item.amount,
+            amount: amount,
+            time: time,
+            day: day,
+            email: email,
+            user: userName,
+            photo: item.photo,
+            timestamp: new Date().toLocaleString()
+        };
+        let historyData = JSON.parse(localStorage.getItem('history')) || [];
+        historyData.push(historyItem);
+        localStorage.setItem('history', JSON.stringify(historyData));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        historyContainer.innerHTML = '';
+        const historyData = JSON.parse(localStorage.getItem('history')) || [];
+        historyData.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('history-item');
+            div.innerHTML = `<div><p>Number: ${item.number}</p><p>Kpay Name: ${item.amount}</p><p> amount : ${item.day}</p><p>Time: ${item.timestamp}</p><p></p></div>`;
+            historyContainer.appendChild(div);
+        });
+    }
+
+    renderHistory();
+});
+ // Function to update the displayed number every 6 seconds
+ function updateNumber() {
+      var currentTime = new Date();
+      var currentHour = currentTime.getHours();
+      var currentMinute = currentTime.getMinutes();
+      var currentSecond = currentTime.getSeconds();
+      
+      // Check if the current time matches any of the stop times
+      for (var i = 0; i < stopTimes.length; i++) {
+        if (currentHour === stopTimes[i].hour && currentMinute === stopTimes[i].minute && currentSecond === 0) {
+          saveNumber(); // Automatically save the stopped number
+          return;
+        }
+      }
+    };
+    searchBar.addEventListener('input', () => {
+        const query = searchBar.value.toLowerCase();
+        results.innerHTML = '';
+
+        numbers.filter(item => item.number.includes(query))
+               .forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td><img src="${item.photo}" alt="${item.name}"></td><td>${item.number}</td><td>${item.name}</td><td>${item.amount}</td><td>${item.day}</td>`;
+                    tr.addEventListener('click', () => handleChoice(item));
+                    results.appendChild(tr);
+               });
+    });
+
+    function handleChoice(item) {
+        if (userBalance >= item.amount) {
+            userBalance -= item.amount;
+            localStorage.setItem('userBalance', userBalance);
+            userBalanceDisplay.textContent = `Balance: $${userBalance}`;
+            alert(`You selected number ${item.number} and $${item.amount} was deducted from your balance.`);
+            saveHistory(item);
+            sendEmail(item);
+        } else {
+            alert('Insufficient balance!');
+        }
+    }
+
+    function saveHistory(item) {
+        const historyItem = {
+            number: item.number,
+            name: item.name,
+            amount: item.amount,
+            photo: item.photo,
+            day: item.day,
+            timestamp: new Date().toLocaleString()
+        };
+        let historyData = JSON.parse(localStorage.getItem('history')) || [];
+        historyData.push(historyItem);
+        localStorage.setItem('history', JSON.stringify(historyData));
+        renderHistory();
+    }
+
+    function renderHistory() {
+        historyContainer.innerHTML = '';
+        const historyData = JSON.parse(localStorage.getItem('history')) || [];
+        historyData.forEach(item => {
+            const div = document.createElement('div');
+            div.classList.add('history-item');
+            div.innerHTML = `<img src="${item.photo}" alt="${item.name}"><div><p>Number: ${item.number}</p><p>Name: ${item.name}</p><p>Kpay Name: $${item.amount}</p><p>Time: ${item.timestamp}</p><p> amount$ ${item.day}</p></div>`;
+            historyContainer.appendChild(div);
+        });
+    }
+
+    
+    </script>
+</body>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    background-color: #e82626;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+#searchBar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #000000;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #040303;
+}
+
+tbody tr:hover {
+    background-color: #000000;
+    cursor: pointer;
+}
+
+#results img {
+    width: 20px;
+    height: 20px;
+}
+
+#history {
+    margin-top: 20px;
+}
+
+.history-item {
+    margin: 5px 0;
+    padding: 10px;
+    background: #c7c7c7;
+    border-radius: 5px;
+    
+}
+
+img{
+    width: 35%;
+}
+</style>
+</html>
