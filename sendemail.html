@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number List with Email and History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .number-card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 10px;
+            width: 100px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .selected {
+            background-color: #d1e7dd;
+            border-color: #0f5132;
+        }
+        form {
+            margin: 20px auto;
+            max-width: 400px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .history {
+            margin: 20px auto;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Send number</h1>
+    <a href="hidtory">History</a>
+    <div class="container" id="numberContainer"></div>
+    <form id="emailForm">
+        
+        <div class="field">
+            <label for="username">username</label>
+            <input type="text" name="username" id="username">
+          </div>
+          <div class="field">
+            <label for="selectedNumber">Text Number</label>
+            <input type="text" name="selectedNumber" id="selectedNumber">
+          </div>
+          <div class="field">
+            <label for="amount"> Money amount</label>
+            <input type="text" name="amount" id="amount">
+          </div>
+          <div class="field">
+            <label for="email">email</label>
+            <input type="text" name="email" id="email">
+          </div>
+          
+        
+ 
+
+  <input type="submit" id="button" value="Send Number" >
+    </form>
+    <div class="history" id="historyContainer">
+        <h2>History</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>    <script>
+        (function(){
+            emailjs.init("80uAcGkKQNbay0xpB"); // Replace with your EmailJS user ID
+        })();
+
+        
+        function generateNumbers() {
+            const container = document.getElementById('numberContainer');
+            for (let i = 0; i <= 999; i++) {
+                const numberCard = document.createElement('div');
+                numberCard.classList.add('number-card');
+                const numberStr = String(i).padStart(3, '0');
+                const numberName = numberToWords(i);
+                const imgSrc = `https://placehold.it/50x50?text=${numberStr}`; // Replace with actual photo source
+                numberCard.innerHTML = `<img src="${imgSrc}" alt="${numberStr}"><br><strong>${numberStr}</strong><br>${numberName}`;
+                numberCard.addEventListener('click', () => selectNumber(numberStr));
+                container.appendChild(numberCard);
+            }
+        }
+
+        function selectNumber(number) {
+            const previouslySelected = document.querySelector('.number-card.selected');
+            if (previouslySelected) {
+                previouslySelected.classList.remove('selected');
+            }
+
+            const selectedCard = Array.from(document.querySelectorAll('.number-card')).find(card => card.querySelector('strong').textContent === number);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            document.getElementById('selectedNumber').value = number;
+        }
+
+        function sendEmail(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const selectedNumber = document.getElementById('selectedNumber').value;
+            const amount = document.getElementById('amount').value;
+            const email = document.getElementById('email').value;
+
+            if (!selectedNumber) {
+                alert('Please select a number.');
+                return;
+            }
+
+            const templateParams = {
+                username: username,
+                selectednumber: selectedNumber,
+                amount: amount,
+                email: email,
+            };
+
+            emailjs.send('default_service', 'template_099mw1b', templateParams)
+                .then((response) => {
+                    console.log('Email sent successfully!', response.status, response.text);
+                    saveHistory(username, selectedNumber, amount, email);
+                }, (error) => {
+                    console.error('Failed to send email.', error);
+                });
+        }
+
+        function saveHistory(username, number, amount, email) {
+            const historyList = document.getElementById('historyList');
+            const historyItem = document.createElement('li');
+            historyItem.textContent = `User: ${username}, Number: ${number}, Amount: $${amount}, Email: ${email}`;
+            historyList.appendChild(historyItem);
+        }
+
+        document.getElementById('emailForm').addEventListener('submit', sendEmail);
+
+        window.onload = generateNumbers;
+    </script>
+</body>
+</html>
