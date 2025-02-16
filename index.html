@@ -28,8 +28,17 @@
         </table>
     </div>
     <div class="container" id="detailsContainer" style="display: none;">
-      <div class="kpayname"> <h3>လွဲရမည့် kpay = 09982030199</h3><h3>အမည် = wana tun </h3> <h2>ငွေအရင်လွှဲ ရပါမည်။</h2></div>
-      
+ <div class="payment-container">
+    <div class="payment-option" data-name="Kpay" data-number="09982030177 / Name : Wanatun ">
+      <img src="kpay.webp" alt="PayPal">
+    </div>
+    <div class="payment-option" data-name="karsikorn" data-number="1988337400 / Name : Aung zaw myo">
+      <img src="karsikorn.webp" alt="Mastercard">
+    </div>
+   
+  </div>
+
+  <div id="payment-info" class="hidden"></div>      
       
         <img id="selectedPhoto" src="" alt="">
         <p id="selectedNumber"></p>
@@ -1212,6 +1221,20 @@
 });
 
     </script>
+     <script>
+    document.querySelectorAll('.payment-option').forEach(option => {
+  option.addEventListener('click', () => {
+    const name = option.getAttribute('data-name');
+    const number = option.getAttribute('data-number');
+
+    const infoBox = document.getElementById('payment-info');
+    infoBox.innerHTML = `<strong>${name}</strong> (ID: ${number})`;
+    infoBox.classList.remove('hidden');
+    infoBox.style.display = 'block';
+  });
+});
+
+  </script>
 </body>
 <style>
   body {
