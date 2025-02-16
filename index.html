@@ -29,6 +29,27 @@
     </div>
     <div class="container" id="detailsContainer" style="display: none;">
       <div class="kpayname"> <h3> kpay number= 09982030199  </h3><h3>Name = wana tun </h3> <h2>ငွေအရင်လွှဲ ရပါမည်။</h2></div>
+         <div class="copy-container">
+        <label for="name">Name</label>
+        <input type="text" id="name" value="John Doe" readonly>
+        <button onclick="copyText('name')">Copy</button>
+    </div>
+    
+    <div class="copy-container">
+        <label for="phone-number">Phone Number</label>
+        <input type="text" id="phone-number" value="+1234567890" readonly>
+        <button onclick="copyText('phone-number')">Copy</button>
+    </div>
+    
+    <script>
+        function copyText(elementId) {
+            var inputElement = document.getElementById(elementId);
+            inputElement.select();
+            inputElement.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            alert(elementId.replace('-', ' ') + " copied: " + inputElement.value);
+        }
+    </script>
       
         <img id="selectedPhoto" src="" alt="">
         <p id="selectedNumber"></p>
