@@ -10,7 +10,7 @@
 <body>
     <nav>
         <h1>3D Myanmar</h1>
-       <div class="sa">1000 KS ဖိုး = 600000 KS</div>
+        <div class="live-text"><i class="bi bi-pin-angle-fill" style="color: #ff0000;"></i>1000MMK (600000MMK) </div>
       
 
     </nav>
@@ -1235,8 +1235,78 @@
 });
 
   </script>
+     <script>
+          let slideIndex = 0;
+          showSlides();
+  
+          function showSlides() {
+              let slides = document.querySelectorAll(".slides");
+              let dots = document.querySelectorAll(".dot");
+              for (let i = 0; i < slides.length; i++) {
+                  slides[i].style.display = "none";
+              }
+              slideIndex++;
+              if (slideIndex > slides.length) { slideIndex = 1; }
+              slides[slideIndex - 1].style.display = "block";
+              dots.forEach(dot => dot.classList.remove("active"));
+              dots[slideIndex - 1].classList.add("active");
+              setTimeout(showSlides, 3000);
+          }
+  
+          function changeSlide(n) {
+              slideIndex += n - 1;
+              showSlides();
+          }
+  
+          function currentSlide(n) {
+              slideIndex = n - 1;
+              showSlides();
+          }
+      </script>
 </body>
 <style>
+     .slideshow-container {
+            position: relative;
+            max-width: 600px;
+            margin: auto;
+        }
+        .slides { display: none; }
+        img { width: 100%; border-radius: 10px; }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .dots-container { text-align: center; margin-top: 10px; }
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #bbb;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .active { background-color: #717171; }
+        .live-text {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 20px;
+            font-weight: bold;
+            color: rgb(247, 243, 243);
+            top: 70px;
+            animation: moveText 30s linear infinite;
+        }
+        @keyframes moveText {
+            from { left: 100%; }
+            to { left: -100%; }
+        }
   body {
     font-family: Arial, sans-serif;
     background-color: #77E4C8;
