@@ -45,7 +45,7 @@
         <p id="selectedAmount"></p>
         <input type="text" id="inputAmount" placeholder="‌ေငွလွှဲသည့် အမည်" required>
         <input type="text" id="inputTime" placeholder=" အမှတ်စဥ် နံပတ်" required>
-        <input type="text" id="inputDate" placeholder="‌ေငွပမာဏ MMK  (or) BATH ရေးပေးပါ" required>
+        <input type="text" id="inputDate" placeholder="‌ေငွပမာဏ MMK (or) BATH " required>
         <input type="text" id="inputEmail" placeholder="ဖုန်းနံပတ်နံပတ်" required>
 
         
@@ -1211,7 +1211,7 @@
         historyData.forEach(item => {
             const div = document.createElement('div');
             div.classList.add('history-item');
-            div.innerHTML = `<img src="${item.photo}" alt="${item.name}"><div><p>Number: ${item.number}</p><p>Name: ${item.name}</p><p>Kpay Name: $${item.amount}</p><p>Time: ${item.timestamp}</p><p> amount$ ${item.day}</p><p>for 16/02/2024.</p></div>`;
+            div.innerHTML = `<img src="${item.photo}" alt="${item.name}"><div><p>Number: ${item.number}</p><p>Name: ${item.name}</p><p>Kpay Name: $${item.amount}</p><p>Time: ${item.timestamp}</p><p> amount$ ${item.day}</p><p>${item.timestamp}</p></div>`;
             history.appendChild(div);
         });
     }
