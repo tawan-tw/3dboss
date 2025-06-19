@@ -58,7 +58,30 @@
 
       </div>
     </div>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
+<script>const firebaseConfig = {
+  apiKey: "AIzaSyBcCAQB8IOcoSAbjF9gsr7dU7VnBp1NA2g",
+  authDomain: "d-myanmar-3d.firebaseapp.com",
+  projectId: "d-myanmar-3d",
+  messagingSenderId: "908682794347",
+  appId: "1:908682794347:android:8a844a2ed996a7addf682e"
+};
 
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+
+// Get token
+messaging.getToken({ vapidKey: 'BCdWS7FGQe8EqUA9xFGp8cKbBCgWEw2GfdrpsrdB318U_AZ6bv1l6KkdBBhG6_6J1B_cA6NcMkHK-_cxOo75YE8' }).then((currentToken) => {
+  if (currentToken) {
+    console.log('FCM Token:', currentToken);
+  } else {
+    console.warn('No registration token available.');
+  }
+}).catch((err) => {
+  console.error('An error occurred while retrieving token.', err);
+});
+</script>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
